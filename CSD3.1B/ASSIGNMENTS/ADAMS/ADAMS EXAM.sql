@@ -1,0 +1,107 @@
+create table projectstudent(
+student_ID VARCHAR(100) PRIMARY KEY,
+LASTNAME VARCHAR(100),
+OTHERNAME VARCHAR(100),
+DOB VARCHAR(20),
+GROUPLEADER VARCHAR(100)
+
+);
+
+
+-- INSERTING VALUES
+
+INSERT INTO PROJECTSTUDENT VALUES('S001', 'Ama', 'Kofi', '12/01/1990', '');
+INSERT INTO PROJECTSTUDENT VALUES('S002', 'ABI', 'KWAKU', '12/04/1990', '');   
+INSERT INTO PROJECTSTUDENT VALUES('S003', 'KOFI', 'MENSAH', '12/04/1990', '' );
+INSERT INTO PROJECTSTUDENT VALUES('S004', 'ADAM', 'MENSAH', '12/04/1990',''   );
+
+
+
+CREATE TABLE ProjectTeam(
+projectID VARCHAR(100) primary key,
+Student_ID VARCHAR(100),
+constraint FK_Student_ID foreign key(Student_ID) REFERENCES projectstudent(Student_ID)
+
+);
+
+INSERT INTO ProjectTeam VALUES('P001', 'S001' );
+INSERT INTO ProjectTeam VALUES('P002', 'S002' );
+INSERT INTO ProjectTeam VALUES('P003', 'S003' );
+INSERT INTO ProjectTeam VALUES('P004', 'S004' );
+
+
+
+
+create table project_SUPERVISOR(
+SUPERVISOR_ID VARCHAR(100) PRIMARY KEY,
+LastName varchar(100),
+OtherNames varchar(100)
+
+);
+
+INSERT INTO project_SUPERVISOR VALUES('L001', 'AMA', 'KOFI' );
+INSERT INTO project_SUPERVISOR VALUES('L002', 'ABI','KWAKU' );
+INSERT INTO  project_SUPERVISOR VALUES('L003', 'KOFI', 'MENSAH' );
+INSERT INTO  project_SUPERVISOR VALUES('L004', 'ADAM', 'MENSAH' );
+
+CREATE TABLE  projectIDESCRIPTION(
+ProjectID VARCHAR(100) PRIMARY KEY,
+PROJECT_TITEL VARCHAR(100),
+PROJECT_SUMMARY VARCHAR(100),
+SUPERVISOR_ID VARCHAR(100),
+constraint FK_SUPERVISOR_ID foreign key(SUPERVISOR_ID) REFERENCES project_SUPERVISOR(SUPERVISOR_ID)
+
+);
+
+INSERT INTO   projectIDESCRIPTION VALUES('P001', 'STUDENT REGISTRATION', 'MANAGE STUDENTS REGISTRATION','L001' );
+INSERT INTO   projectIDESCRIPTION VALUES('P002', 'STUDENT REGISTRATION', 'MANAGE STUDENTS REGISTRATION','L002' );
+INSERT INTO    projectIDESCRIPTION VALUES('P003', 'TAX MONITOR', 'SYSTEM TO GENERATE TAX LIABILITY OF INDIVIDUAL AND ORGANIZATIONS','L003' );
+INSERT INTO    projectIDESCRIPTION VALUES('P004', 'TAX MONITOR', 'SYSTEM TO GENERATE TAX LIABILITY OF INDIVIDUAL AND ORGANIZATIONS','L004' );
+
+CREATE TABLE PROJECT_SUBMISSIONS(
+ProjectID VARCHAR(100),
+COMPONENTS_SUBMITTED VARCHAR(100),
+DATE_SUBMITTED VARCHAR(100),
+constraint FK_projectID foreign key(projectID) REFERENCES projectIDESCRIPTION(projectID)
+);
+ 
+ DROP TABLE PROJECT_SUBMISSIONS;
+ 
+INSERT INTO    PROJECT_SUBMISSIONS VALUES('P001', 'project proposal', '03/03/2012' );
+INSERT INTO    PROJECT_SUBMISSIONS VALUES('P002', ' project proposa', '03/03/2012' );
+INSERT INTO     PROJECT_SUBMISSIONS VALUES('P003', 'project proposa', '03/03/2012' );
+INSERT INTO     PROJECT_SUBMISSIONS VALUES('P004', 'Literature Review', '05/04/2012' );
+
+alter table project_submissions add(review_remarks varchar(100));
+
+update project_submissions
+SET review_remarks = 'pending'
+WHERE ProjectID  = 'P001';
+
+update project_submissions
+SET review_remarks = 'ACCEPTED'
+WHERE ProjectID  = 'P002';
+
+update project_submissions
+SET review_remarks = 'REJECTED'
+WHERE ProjectID  = 'P003';
+
+update project_submissions
+SET review_remarks = 'pending'
+WHERE ProjectID  = 'P004';
+
+update project_submissions
+SET DATE_SUBMITTED = curdate()
+WHERE  ProjectID   = 'P001';
+
+update project_submissions
+SET DATE_SUBMITTED = curdate()
+WHERE  ProjectID   = 'P002';
+
+update project_submissions
+SET DATE_SUBMITTED = curdate()
+WHERE  ProjectID   = 'P003';
+
+update project_submissions
+SET DATE_SUBMITTED = curdate()
+WHERE  ProjectID   = 'P004';

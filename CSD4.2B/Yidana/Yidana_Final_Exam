@@ -1,0 +1,88 @@
+CREATE DATABASE project;
+
+/*CREATIG PROJECT STUDENTS TABLE*/
+
+CREATE TABLE ProjectStudent (
+
+    studentID int PRIMARY KEY AUTO_INCREMENT,
+    lastname varchar(20),
+    othernames varchar(20),
+    dob date,
+    groupleader varchar(20)
+);
+
+
+CREATE TABLE ProjectTeam(
+  ProjectID int ,
+  StudentID int,
+    FOREIGN KEY (ProjectID) REFERENCES ProjectDesc(ProjectID),
+    FOREIGN KEY (StudentID) REFERENCES ProjectStudent(StudentID)
+);
+
+
+CREATE TABLE ProjectSup(
+    supvervisorID int PRIMARY KEY AUTO_INCREMENT,
+    lastname varchar(20),
+    othernames varchar(20)
+);
+
+
+CREATE TABLE ProjectDesc (
+    projectID int PRIMARY KEY AUTO_INCREMENT,
+    projectTitle varchar (20),
+    projectSummary varchar (20),
+    supervisorID int,
+    FOREIGN KEY (supervisorID) REFERENCES ProjectSup(supvervisorID) 
+);
+
+CREATE TABLE ProjectSubmissions(
+     projectID int,FOREIGN KEY (projectID) REFERENCES ProjectSup(supvervisorID),
+    componentSubmitted varchar (50),
+    dateSubmitted date
+);
+
+/*populating tables projectStudent with data*/
+
+INSERT INTO `ProjectStudent` (`studentID`, `lastname`, `othernames`, `dob`, `groupleader`) VALUES (NULL, 'KOFI', 'AMA', '2021-09-27', NULL), 
+(NULL, 'KWAKU', 'ABI', '2021-09-22', NULL), 
+(NULL, 'MENSAH', 'KAFI', '2011-09-19', NULL), 
+(NULL, 'MUSHA', 'MANSA', '2012-09-19', NULL);
+
+/*populating tables projectSupervisor with data*/
+
+INSERT INTO `ProjectSup` (`supvervisorID`, `lastname`, `othernames`) 
+VALUES (NULL, 'AMA', 'JECK'), 
+ (NULL, 'ABU', 'ISSAH'),
+ (NULL, 'MENSAH', 'LUKA'), 
+ (NULL, 'SUF-YAN', 'KOJI');
+ 
+ /*populating tables projectDescription with data*/
+ 
+ INSERT INTO `ProjectDesc` (`projectID`, `projectTitle`, `projectSummary`, `supervisorID`) VALUES 
+ (NULL, 'Student Registration', 'Managing student registration', '1'), 
+ (NULL, 'Student Registration', 'Managing student registration', '2'), 
+ (NULL, 'Tax Monitor', 'system generate tax liability of individual and organization', '3'), 
+ (NULL, 'Tax Monitor', 'system generate tax liability of individual and organization', '4');
+ 
+  /*populating tables projectTeam with data*/
+ 
+ INSERT INTO `ProjectTeam` (`ProjectID`, `StudentID`) VALUES
+  ('5', '1'), ('6', '2'), ('7', '3'), ('8', '4');
+  
+  /*populating tables projectSubmission with data*/
+  
+ INSERT INTO `ProjectSubmissions` (`projectID`, `componentSubmitted`, `dateSubmitted`) 
+ VALUES ('5', 'Project Proposal', '2011-03-16'), 
+ ('6', 'Project Proposal', '2012-01-17'),
+ ('7', 'Project Proposal', '2013-03-20'), 
+ ('8', 'Literature', '2014-07-15');
+ 
+ 
+ /*Implementing the remark columon in projectSubmission table */
+  
+ ALTER TABLE `ProjectSubmissions` ADD `remark` VARCHAR(100) AFTER `componentSubmitted`;
+
+/* modifying the date submitted to accept current date of the system */
+
+ALTER TABLE `ProjectSubmissions` CHANGE `dateSubmitted` `dateSubmitted` DATE NULL DEFAULT CURRENT_TIMESTAMP;
+

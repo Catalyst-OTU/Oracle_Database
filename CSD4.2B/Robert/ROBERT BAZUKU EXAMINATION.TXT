@@ -1,0 +1,329 @@
+-- EXAMINATION
+
+-- CREATING PROJECTSTUDENT_table
+create table Project_Student(
+		     student_id varchar(30),
+		     last_name varchar(30),
+		     other_name varchar(30),
+		     DOB date,
+             gruop_leader varchar(30),
+             primary key(student_id)
+		);
+        
+       
+       -- CREATING PROJECTSUPERVISOR TABLE
+       
+create table ProjectSupervisor(
+		     supervisor_id varchar(30),
+		     last_name varchar(50),
+		     other_name varchar(50),
+		    primary key(supervisor_id)
+		);
+
+
+  -- CREATING PROJECCTDESCRIPTION TABLE
+       
+create table ProjectDescriptionr(
+		     project_id varchar(30),
+		     project_title varchar(200),
+             project_summary varchar(200),
+             supervisor_id varchar(200),
+			primary key(project_id)
+		);    
+
+
+  -- CREATING PROJECTSubmissions TABLE
+       
+create table ProjectSubmissions(
+		     project_id varchar(30),
+		     component_submitted date,
+			date_submitted date
+		);
+
+
+  -- CREATING PROJECTTEAM TABLE
+create table ProjectTeam(
+		     project_id varchar(30),
+		     student_id varchar(30),
+             primary key(project_id)
+			 );
+        
+-- inserting into projectstudent
+insert into project_student(student_id, last_name, other_name ) 
+                values ('S001', 'kofi', 'ama'); 
+               
+update project_student set dob = '1990-01-12' where student_id = 'S001';
+ 
+ update project_student set dob = '1990-04-12' where student_id = 'S002';
+ 
+ update project_student set dob = '1990-01-12' where student_id = 'S003';
+ 
+ update project_student set gruop_leader = 'P001' where student_id = 'S002';
+ 
+                
+        
+insert into project_student(student_id, last_name, other_name ) 
+                values ('S002', 'kwaku', 'ABI');
+                
+insert into project_student(student_id, last_name, other_name ) 
+                values ('S003', 'MENSAH', 'KOFI'); 
+                
+
+                
+
+-- inserting into project team
+
+insert into projectteam(project_id, student_id ) 
+                values ('P001', 'S001'); 
+                
+
+insert into projectteam(project_id, student_id ) 
+                values ('P001', 'S002'); 
+                
+insert into projectteam(project_id, student_id ) 
+                values ('P002', 'S003'); 
+                
+insert into projectteam(project_id, student_id ) 
+                values ('P002', 'S003'); 
+                
+                -- making stduent_id a froreign key in project team table
+ALTER TABLE projectteam ADD CONSTRAINT fk_stu_id FOREIGN KEY (student_id) REFERENCES project_student(student_id); 
+
+ALTER TABLE projectteam
+  DROP PRIMARY KEY;
+  
+ 
+-- making project_id a froreign key in project team table
+ALTER TABLE projectteam ADD CONSTRAINT fk_pro_id FOREIGN KEY (project_id) REFERENCES projectdescriptionr(project_id); 
+
+-- making project_id a froreign key in projectsubmision table
+ALTER TABLE projectsubmissions ADD CONSTRAINT fk_prod_id FOREIGN KEY (project_id) REFERENCES projectdescriptionr(project_id);
+
+-- making supervisor_id a froreign key in projectdescriptionr table
+ALTER TABLE projectdescriptionr ADD CONSTRAINT fk_sup_id FOREIGN KEY (supervisor_id) REFERENCES projectsupervisor(supervisor_id);
+
+ 
+
+-- inserting into project suppervisor table
+
+insert into projectsupervisor(supervisor_id, last_name, other_name ) 
+                values ('L001', 'king', 'WINK'); 
+
+insert into projectsupervisor(supervisor_id, last_name, other_name ) 
+                values ('L002', 'abena', 'SEEWAN');
+                
+-- inserting into project suppervisor table
+
+insert into projectdescriptionr(project_id, project_title, project_summary, supervisor_id ) 
+                values ('P001', 'STUDENT REGISTRATION', 'MANAGE STUDENT REGISRATION', 'L001'); 
+
+insert into projectdescriptionr(project_id, project_title, project_summary, supervisor_id ) 
+                values ('P002', 'TAX MONITOR', 'System to generate Tax liability of individual and organizations', 'L002'); 
+
+
+
+ALTER TABLE projectsubmissions
+MODIFY component_submitted
+varchar(100);
+
+-- inserting into project suppervisor table
+
+insert into projectsubmissions(project_id, component_submitted, date_submitted ) 
+                values ('P001', 'Project Proposal', '2012-3-3'); 
+
+insert into projectsubmissions(project_id, component_submitted, date_submitted ) 
+                values ('P002', 'Project Proposal', '2012-3-3'); 
+
+-- adding a new column called review_remarks
+alter table projectsubmissions add (review_remarks varchar(100));
+
+ -- inserting deafult data for review remarks table
+update projectsubmissions set review_remarks='Pending' where component_submitted='Project Proposal';
+
+-- modifyng date_sumitted to use system current date and time
+ALTER TABLE projectsubmissions
+MODIFY date_submitted
+timestamp;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--ASSIGNMENT
+-- creating products table
+create table products(
+		     product_id varchar(30),
+		     product_name varchar(30),
+		     product_description varchar(30),
+		     price decimal(10, 2),
+             primary key(product_id)
+		);
+
+-- creating product_category table
+create table product_category(
+		     category_id varchar(30),
+		     product_id varchar(30),
+	products	     category_name varchar(30),
+             PRIMARY KEY(category_id)
+		);
+
+
+-- make product_id a foreign key
+ALTER TABLE product_category ADD CONSTRAINT fk_product_id_product_category FOREIGN KEY (product_id) REFERENCES products(product_id);
+
+-- changing price column to product_price
+ALTER TABLE products 
+RENAME COLUMN price TO product_price;
+
+
+--inserting data into products table
+insert into products(product_id, product_name, product_description, product_price ) 
+                values ('SAM001', 'SAMSUNG GALAXY A51', 'SAMSUNG GALAXY A51 HAS QUALITY CAMERA', 2000.40);
+
+--changing character size
+ALTER TABLE products
+MODIFY product_description
+varchar(200);
+
+
+--inserting data into products table
+insert into products(product_id, product_name, product_description, product_price ) 
+                values ('HP002', 'HP LATOP', 'HP LAPTOPS ARE AFFORDABLE AND EASY TO USE', 7500.55);
+     
+     --inserting data into products table
+insert into products(product_id, product_name, product_description, product_price ) 
+                values ('LG003', 'LG TELEVISION', 'LG TELEVISIONS ARE VERY STRONG AND AFFORDABLE', 4750.77);
+                
+                
+                --inserting data into product_category table
+    insert into product_category(category_id, product_id, category_name ) 
+                values ('PHONE001', 'SAM001', 'LAPTOPS'); 
+                
+           update product_category set category_name = 'PHONES' where category_id = 'PHONE001';     
+
+
+ --inserting data into product_category table                
+      insert into product_category(category_id, product_id, category_name ) 
+                values ('LAPTOP002', 'HP002', 'LAPTOPS'); 
+        
+         --inserting data into product_category table
+insert into product_category(category_id, product_id, category_name ) 
+                values ('TV003', 'LG003', 'TELEVISIONS'); 
+                
+                
+                --CHANGING THE PRICE OF HP LATOPS
+ update products set product_price = 15000.22 where product_id = 'HP002';                 
+                
+           
+                
+                
+alter table students add (marks int(10));
+
+update students set marks=77 where id=1;
+   
+   update students set marks=80 where id=2;
+                
+      update students set marks=72 where id=3;          
+                
+                adding foreign keys to tables
+                
+ALTER TABLE course ADD CONSTRAINT fk_(id) FOREIGN KEY (id) REFERENCES students(id);     
+
+select * from students where marks >=80;         
+                
+                
+                
+    select * from students            
+
+
+		insert into students(student_id, student_name, date_of_birth, email, phone ) 
+                values ('CSD4.2M002', 'Jonas Adogbongo', 1990-12-17, 'jonas@hotmail.com', 0206873453);
+
+		--  CREATING OF STUDENTS TABLE
+			
+		create table students(
+		     id int PRIMARY KEY AUTO_INCREMENT,
+		     student_id varchar(50),
+		     student_name varchar(50),
+		     dob date,
+		     email varchar(50),
+		     phone int(20)
+		);
+
+
+		--  ADDING A COLUMN TO AN EXISTING TABLE
+		
+		alter table students add (created_at timestamp);
+
+		
+		alter table students add (date_of_birth varchar(50));
+
+
+
+		--  DROPPING A COLUMN
+
+		alter table students drop column dob;
+
+
+
+
+		--  INSERTING RECORDS OR VALUES INTO STUDENTS TABLE
+		
+		insert into students(student_id, student_name, date_of_birth, email, phone ) 
+                values ('CSD4.2M001', 'Robert Bazuku', 1978-02-26, 'robert@gamil.com', 0541547251);
+
+		insert into students(student_id, student_name, date_of_birth, email, phone ) 
+                values ('CSD4.2M002', 'Jonas Adogbongo', 1990-12-17, 'jonas@hotmail.com', 0206873453);
+
+		insert into students(student_id, student_name, date_of_birth, email, phone ) 
+                values ('CSD4.2M003', 'Ishaw Yidana', 1999-04-11, 'yidana@yahoo.com', 0593678923);
+
+
+
+
+		--  UPDATE A SINGLE COLUMN
+
+		update students set date_of_birth = '2000-01-01' where id = 3;
+
+
+select * from students;
+
+create table PRODUCTS(
+		     product_id int PRIMARY KEY AUTO_INCREMENT,
+		     product_name varchar(50),
+		     product_description varchar(50),
+		     );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
